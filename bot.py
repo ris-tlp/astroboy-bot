@@ -1,7 +1,7 @@
 import discord
+import json
 from discord.ext import commands
 
-TOKEN = ""
 prefix = ("$")
 bot = commands.Bot(command_prefix = prefix)
 
@@ -25,4 +25,8 @@ if __name__ == '__main__':
         except Exception as error:
             print("{} cannot be loaded. [{}]".format(extension, error))
 
-bot.run(TOKEN)
+
+with open("credentials.json", "r") as read_file:
+    credentials = json.load(read_file)
+
+bot.run(credentials["TOKEN"])
