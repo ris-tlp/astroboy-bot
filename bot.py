@@ -5,7 +5,7 @@ from discord.ext import commands
 prefix = ("$")
 bot = commands.Bot(command_prefix = prefix)
 
-extensions = ['cogs.fun']
+extensions = ['cogs.fun', 'cogs.manualSpace']
 
 @bot.event
 async def on_ready():
