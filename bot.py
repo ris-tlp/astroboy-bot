@@ -1,8 +1,9 @@
 import discord
-import json
 from discord.ext import commands
+import json
+import os
 
-prefix = ("$")
+prefix = ("$", ".")
 bot = commands.Bot(command_prefix = prefix)
 
 extensions = ['cogs.fun', 'cogs.manualSpace']
@@ -18,13 +19,15 @@ async def close(ctx):
     await bot.logout()
 
 if __name__ == '__main__':
-    for extension in extensions:
-        try:
-            bot.load_extension(extension)
-            print("{} loaded".format(extension))
-        except Exception as error:
-            print("{} cannot be loaded. [{}]".format(extension, error))
-
+    #loading cogs
+    for file in os.listdir("cogs"):
+        if file.endswith(".py"):
+            name = file[:-3]
+            try:
+                bot.load_extension("cogs.{}".format(name))
+                print("{} loaded".format(name))
+            except Exception as error:
+                print("{} cannot be loaded <{}>".format(name, error))
 
 with open("credentials.json", "r") as read_file:
     credentials = json.load(read_file)
