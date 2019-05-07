@@ -9,17 +9,19 @@ bot = commands.Bot(command_prefix = prefix)
 
 @bot.event
 async def on_ready():
-    bot.loop.create_task(test())
+
+    print("-------------")
+    print(bot.user.name)
+    print(bot.user.id)
+    print("-------------")
+
+    AutoSpace = bot.get_cog("AutoSpace")
+    bot.loop.create_task(AutoSpace.newLaunch())
+
     await bot.change_presence(activity = discord.Game("with itself"))
 
-    print("Bot ready")
+    print("Bot ready.")
 
-async def test():
-    await bot.wait_until_ready()
-    while not bot.is_closed():
-        channel = bot.get_channel(481106726645399565)
-        await channel.send("background task")
-        await asyncio.sleep(7)
 
 @bot.command(pass_context = True)
 async def close(ctx):
