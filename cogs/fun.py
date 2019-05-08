@@ -26,8 +26,7 @@ class Fun(commands.Cog):
                     "Without a doubt",
                     "Doubtful"]
 
-        await self.bot.say(random.choice(responses) + ", " + ctx.message.author.mention)
-
+        await ctx.send(random.choice(responses) + ", " + ctx.message.author.mention)
 
 def setup(bot):
     bot.add_cog(Fun(bot))
