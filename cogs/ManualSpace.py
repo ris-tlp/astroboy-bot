@@ -40,27 +40,52 @@ class ManualSpace(commands.Cog):
         name.replace(" ", "&")
         response = requests.get("https://launchlibrary.net/1.4/agency?name={}".format(name))
         data = response.json()
-        results = ""
+        results = "Here's what I found: " + ctx.message.author.mention + "\n"
+        initialLength = len(results)
 
         for agency in data["agencies"]:
             results += "{}. {} - {}\n".format(str(agency["id"]), agency["name"], agency["abbrev"])
 
-        results = "Here's what I found: " + ctx.message.author.mention + "\n" + results
-        results = results + "\n" + "You can find more information by searching the abbreviation using .abbrev or by ID using .agencyid"
+        if len(results) > initialLength:
+            results = results + "\n" + "You can find more information by searching the abbreviation using .abbrev or by ID using .agencyid"
+        else:
+            results = "No results."
+
         await ctx.send(results)
 
     @commands.command(pass_context = True)
     async def agencyid(self, ctx):
         """Gets information about agency using ID"""
 
-        idinput = ctx.message.content[10:]
-        response = requests.get("https://launchlibrary.net/1.4/agency/{}".format(idinput))
+        idInput = ctx.message.content[10:]
+        response = requests.get("https://launchlibrary.net/1.4/agency/{}".format(idInput))
         data = response.json()
 
         await ctx.send("Name: " + data["agencies"][0]["name"] + "\n" +
                 "Country code: " + data["agencies"][0]["countryCode"] + "\n"
                 + "Website: " + data["agencies"][0]["infoURL"] + "\n" +
                 "Wikipedia: " + data["agencies"][0]["wikiURL"])
+
+    @commands.command(pass_context = True)
+    async def mission(self, ctx):
+        """Gets information about missions with a keyword"""
+
+        missionName = ctx.message.content[8:]
+        missionName.replace(" ", "&")
+        response = requests.get("https://launchlibrary.net/1.4/mission/{}".format(missionName))
+        data = response.json()
+        results = "Here's what I found: " + ctx.message.author.mention + "\n"
+        initialLength = len(results)
+
+        for mission in data["missions"]:
+            results += "{}. {} - {}\n\n".format(mission["id"], mission["name"], mission["description"])
+
+        if len(results) > initialLength:
+            results = results + "\n" + "You can find more information by searching the abbreviation using .abbrevM or by ID using .missionid"
+        else:
+            results = "No results."
+
+        await ctx.send(results)
 
 
 def setup(bot):
