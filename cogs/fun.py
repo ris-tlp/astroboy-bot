@@ -6,12 +6,9 @@ class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    async def on_message_delete(self, message):
-        await self.bot.send_message(message.channel, "Message deleted")
-
-    @commands.command()
-    async def ping(self):
-        await self.bot.say("no")
+    @commands.command(pass_context = True)
+    async def ping(self, ctx):
+        await ctx.send("no")
 
     @commands.command(pass_context = True, name = '8ball')
     async def ball(self, ctx):

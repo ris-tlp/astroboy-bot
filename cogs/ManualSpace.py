@@ -22,8 +22,8 @@ class ManualSpace(commands.Cog):
     @commands.command(pass_context = True)
     async def abbrev(self, ctx):
         """Gets information about an abbreviated agency"""
-        abbr = ctx.message.content[8:]
 
+        abbr = ctx.message.content[8:]
         response = requests.get("https://launchlibrary.net/1.4/agency/{}".format(abbr))
         data = response.json()
 
@@ -35,9 +35,9 @@ class ManualSpace(commands.Cog):
     @commands.command(pass_context = True)
     async def agency(self, ctx):
         """Gets information about an agency"""
+
         name = ctx.message.content[8:]
         name.replace(" ", "&")
-
         response = requests.get("https://launchlibrary.net/1.4/agency?name={}".format(name))
         data = response.json()
         results = ""
@@ -45,8 +45,22 @@ class ManualSpace(commands.Cog):
         for agency in data["agencies"]:
             results += "{}. {} - {}\n".format(str(agency["id"]), agency["name"], agency["abbrev"])
 
-        results = "Here's what I found: " + "\n" + results
+        results = "Here's what I found: " + ctx.message.author.mention + "\n" + results
+        results = results + "\n" + "You can find more information by searching the abbreviation using .abbrev or by ID using .agencyid"
         await ctx.send(results)
+
+    @commands.command(pass_context = True)
+    async def agencyid(self, ctx):
+        """Gets information about agency using ID"""
+
+        idinput = ctx.message.content[10:]
+        response = requests.get("https://launchlibrary.net/1.4/agency/{}".format(idinput))
+        data = response.json()
+
+        await ctx.send("Name: " + data["agencies"][0]["name"] + "\n" +
+                "Country code: " + data["agencies"][0]["countryCode"] + "\n"
+                + "Website: " + data["agencies"][0]["infoURL"] + "\n" +
+                "Wikipedia: " + data["agencies"][0]["wikiURL"])
 
 
 def setup(bot):
