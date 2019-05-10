@@ -5,29 +5,33 @@ import json
 import os
 
 prefix = ("$", ".")
-bot = commands.Bot(command_prefix = prefix)
+bot = commands.Bot(command_prefix=prefix)
+
+
 # bot.remove_command("help")
 
 @bot.event
 async def on_ready():
     print("-------------")
-    print(bot.user.name)
-    print(bot.user.id)
+    print("User::" + bot.user.name)
+    print("ID::" + str(bot.user.id))
+    print("Version::" + discord.__version__)
     print("-------------")
 
     AutoSpace = bot.get_cog("AutoSpace")
     bot.loop.create_task(AutoSpace.newLaunch())
 
-    await bot.change_presence(activity = discord.Game("with itself"))
+    await bot.change_presence(activity=discord.Game("with itself"))
     print("Bot ready.")
 
 
-@bot.command(pass_context = True)
+@bot.command(pass_context=True)
 async def close(ctx):
     await ctx.send("ciao")
     await bot.logout()
 
-@bot.command(pass_context = True)
+
+@bot.command(pass_context=True)
 async def load(ctx, extension):
     try:
         bot.load_extension("cogs.{}".format(extension))
@@ -36,7 +40,8 @@ async def load(ctx, extension):
     except Exception as error:
         print("{} could not be loaded. <{}>".format(extension, error))
 
-@bot.command(pass_context = True)
+
+@bot.command(pass_context=True)
 async def unload(ctx, extension):
     try:
         bot.unload_extension("cogs.{}".format(extension))
@@ -47,7 +52,7 @@ async def unload(ctx, extension):
 
 
 if __name__ == '__main__':
-    #loading cogs
+    # loading cogs
     for file in os.listdir("cogs"):
         if file.endswith(".py"):
             name = file[:-3]
@@ -56,7 +61,6 @@ if __name__ == '__main__':
                 print("{} loaded".format(name))
             except Exception as error:
                 print("{} cannot be loaded <{}>".format(name, error))
-
 
 with open("credentials.json", "r") as read_file:
     credentials = json.load(read_file)

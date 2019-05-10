@@ -3,6 +3,7 @@ from discord.ext import commands
 import requests
 import asyncio
 
+
 class AutoSpace(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -17,14 +18,14 @@ class AutoSpace(commands.Cog):
             data = response.json()
             currentLaunchName = data["launches"][0]["name"]
 
-            #checks if previous launch is the same as the current launch
+            # checks if previous launch is the same as the current launch
             if (not (previousLaunchName == currentLaunchName)) or (previousLaunchName is None):
                 await channel.send("Current launch is " + currentLaunchName)
                 previousLaunchName = currentLaunchName
             else:
                 await channel.send("No new launch")
 
-            await asyncio.sleep(86400) #every 24 hours
+            await asyncio.sleep(86400)  # every 24 hours
 
 
 def setup(bot):
