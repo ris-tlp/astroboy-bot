@@ -1,11 +1,31 @@
 import discord
 from discord.ext import commands
 import requests
+import json
+
+
+with open("credentials.json", "r") as read_file:
+        credentials = json.load(read_file)
 
 
 class ManualSpace(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+      
+    @commands.command(pass_context=True)
+    async def apod(self, ctx):
+        """Manually fetches the Astronomy Picture of the Day"""
+
+        response = requests.get("https://api.nasa.gov/planetary/apod?api_key={}".format(credentials["NASA_API_KEY"]))
+        data = response.json()
+        results = f'''
+        **{data["title"]}** - {data["date"]}
+
+        {data["explanation"]}
+
+        {data["url"]}'''
+
+        await ctx.send(results)
 
     @commands.command(pass_context=True)
     async def rocket(self, ctx):
@@ -40,7 +60,6 @@ class ManualSpace(commands.Cog):
         result = ""
         result += "ID: " + str(data["rockets"][0]["id"]) + "\n"
         result += "Name: " + data["rockets"][0]["name"] + "\n"
-        result += "Default Pads: " + data["rockets"][0]["defaultPads"] + "\n"
         result += "Agencies: "
 
         for agency in dataForFamily["RocketFamilies"][0]["agencies"]:

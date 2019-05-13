@@ -18,6 +18,7 @@ async def on_ready():
 
     AutoSpace = bot.get_cog("AutoSpace")
     bot.loop.create_task(AutoSpace.newLaunch())
+    bot.loop.create_task(AutoSpace.apod())
 
     await bot.change_presence(activity=discord.Game("with itself"))
     print("Bot ready.")
