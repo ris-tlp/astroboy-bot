@@ -8,8 +8,6 @@ prefix = ("$", ".")
 bot = commands.Bot(command_prefix=prefix)
 
 
-# bot.remove_command("help")
-
 @bot.event
 async def on_ready():
     print("-------------")

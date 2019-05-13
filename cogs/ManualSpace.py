@@ -8,6 +8,51 @@ class ManualSpace(commands.Cog):
         self.bot = bot
 
     @commands.command(pass_context=True)
+    async def rocket(self, ctx):
+        """Gets information about a rocket through its name"""
+
+        rocketName = ctx.message.content[8:]
+        response = requests.get(f"https://launchlibrary.net/1.4/rocket/{rocketName}")
+        data = response.json()
+        result = "Here's what I found " + ctx.message.author.mention + "\n\n"
+        initialLength = len(result)
+
+        for rocket in data["rockets"]:
+            result += "ID: {} | Name: {}\n".format(rocket["id"], rocket["name"])
+
+        if len(result) > initialLength:
+            result += "\nYou can find more information through .rocketid using the rocket's ID."
+        else:
+            result = "No results."
+
+        await ctx.send(result)
+
+    @commands.command(pass_context=True)
+    async def rocketid(self, ctx):
+        """Gets information about a rocket through its ID"""
+
+        rocketID = str(ctx.message.content[10:])
+        response = requests.get(f"https://launchlibrary.net/1.4/rocket/{rocketID}")
+        data = response.json()
+        responseForFamily = requests.get("https://launchlibrary.net/1.4/rocketfamily/{}".format(data["rockets"][0]["family"]["id"]))
+        dataForFamily = responseForFamily.json()
+
+        result = ""
+        result += "ID: " + str(data["rockets"][0]["id"]) + "\n"
+        result += "Name: " + data["rockets"][0]["name"] + "\n"
+        result += "Default Pads: " + data["rockets"][0]["defaultPads"] + "\n"
+        result += "Agencies: "
+
+        for agency in dataForFamily["RocketFamilies"][0]["agencies"]:
+            result += agency["name"] + ", "
+
+        result += "\n"
+        result += "More information at: " + data["rockets"][0]["infoURLs"][0] + "\n"
+        result += data["rockets"][0]["imageURL"]
+
+        await ctx.send(result)
+
+    @commands.command(pass_context=True)
     async def nextlaunch(self, ctx):
         """Gets information about the next upcoming launch"""
 
@@ -96,7 +141,7 @@ class ManualSpace(commands.Cog):
         """Gets information about missions by ID"""
 
         missionID = str(ctx.message.content[11:])
-        response = requests.get("https://launchlibrary.net/1.4/mission/{}".format(missionID))
+        response = requests.get(f"https://launchlibrary.net/1.4/mission/{missionID}")
         data = response.json()
 
         await ctx.send("{}. **{}** - {}"

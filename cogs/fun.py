@@ -9,6 +9,7 @@ class Fun(commands.Cog):
 
     @commands.command(pass_context=True)
     async def ping(self, ctx):
+        # await ctx.send(f"{member.display_name}")
         await ctx.send("no")
 
     @commands.command(pass_context=True, name='8ball')
