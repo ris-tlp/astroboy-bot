@@ -18,11 +18,10 @@ class ManualSpace(commands.Cog):
 
         response = requests.get("https://api.nasa.gov/planetary/apod?api_key={}".format(credentials["NASA_API_KEY"]))
         data = response.json()
+
         results = f'''
-        **{data["title"]}** - {data["date"]}
-
-        {data["explanation"]}
-
+        **{data["title"]}** - {data["date"]}\n
+        {data["explanation"]}\n
         {data["url"]}'''
 
         await ctx.send(results)
@@ -38,7 +37,7 @@ class ManualSpace(commands.Cog):
         initialLength = len(result)
 
         for rocket in data["rockets"]:
-            result += "ID: {} | Name: {}\n".format(rocket["id"], rocket["name"])
+            result += f'ID: {rocket["id"]} | Name: {rocket["name"]}\n'
 
         if len(result) > initialLength:
             result += "\nYou can find more information through .rocketid using the rocket's ID."
@@ -56,18 +55,19 @@ class ManualSpace(commands.Cog):
         data = response.json()
         responseForFamily = requests.get("https://launchlibrary.net/1.4/rocketfamily/{}".format(data["rockets"][0]["family"]["id"]))
         dataForFamily = responseForFamily.json()
+        rocket = data["rockets"][0]
 
         result = ""
-        result += "ID: " + str(data["rockets"][0]["id"]) + "\n"
-        result += "Name: " + data["rockets"][0]["name"] + "\n"
-        result += "Agencies: "
+        result += "**ID**: " + str(rocket["id"]) + "\n"
+        result += "**Name**: " + rocket["name"] + "\n"
+        result += "**Agencies**: "
 
         for agency in dataForFamily["RocketFamilies"][0]["agencies"]:
             result += agency["name"] + ", "
 
         result += "\n"
-        result += "More information at: " + data["rockets"][0]["infoURLs"][0] + "\n"
-        result += data["rockets"][0]["imageURL"]
+        result += "**More information at**: " + rocket["infoURLs"][0] + "\n"
+        result += rocket["imageURL"]
 
         await ctx.send(result)
 
@@ -77,14 +77,10 @@ class ManualSpace(commands.Cog):
 
         response = requests.get("https://launchlibrary.net/1.4/launch/next/1")
         data = response.json()
-        await ctx.send("API status code: {}".format(response.status_code))
-        await ctx.send("Name of launch <**{}".format(data["launches"][0]["name"]
-                                                     + "**> has a launch window from <**" + data["launches"][0][
-                                                         "windowstart"]
-                                                     + "**> at <**" + data["launches"][0]["location"]["pads"][0][
-                                                         "name"] +
-                                                     "**> and will be streamed on " + data["launches"][0]["vidURLs"][
-                                                         0]))
+        launch = data["launches"][0]
+        result = f'**Name**: {launch["name"]} \n **Launch window**: {launch["windowstart"]} \n **Location**: {launch["location"]["pads"][0]["name"]} \n **Webcast**: {launch["vidURLs"]}'
+        
+        await ctx.send(result)
 
     @commands.command(pass_context=True)
     async def abbrev(self, ctx):
