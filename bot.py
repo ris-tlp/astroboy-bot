@@ -49,6 +49,15 @@ async def unload(ctx, extension):
     except Exception as error:
         print("{} could not be unloaded. <{}>".format(extension, error))
 
+@bot.command(pass_context=True)
+async def reset(ctx, extension):
+    try:
+        bot.unload_extension("cogs.{}".format(extension))
+        bot.load_extension("cogs.{}".format(extension))
+        await ctx.send(f"{extension} cog reset")
+    except Exception as error:
+        await ctx.send(error)
+
 
 if __name__ == '__main__':
     # loading cogs
