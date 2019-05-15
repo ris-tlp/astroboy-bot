@@ -13,6 +13,24 @@ class ManualSpace(commands.Cog):
         self.bot = bot
 
     @commands.command(pass_context=True)
+    async def pos(self, ctx):
+        """Returns the number and names of people currently in space"""
+
+        try:
+            response = requests.get("http://api.open-notify.org/astros.json")
+            data = response.json()
+            result = f'Number: {data["number"]}\n'
+
+            for astronaut in data["people"]:
+                result += f'Craft: {astronaut["craft"]} | '
+                result += f'Name: {astronaut["name"]} \n'
+
+            await ctx.send(result)
+
+        except Exception as e:
+            await ctx.send("Encountered an error: {e}")
+
+    @commands.command(pass_context=True)
     async def apod(self, ctx):
         """Manually fetches the Astronomy Picture of the Day"""
 
@@ -26,7 +44,6 @@ class ManualSpace(commands.Cog):
             {data["url"]}'''
 
             await ctx.send(results)
-
         except Error as e:
             await ctx.send(f"Encountered an error: {e}")
 
