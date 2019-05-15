@@ -28,10 +28,7 @@ Requires Python `3.5.3` or higher as it uses [discord.py](https://github.com/Rap
 * `apod`: Background task that messages the current Astronomy Picture of the Day through NASA's API.
 
 ### ManualSpace Cog (Commands that need to be invoked)
-<<<<<<< HEAD
 * `pos`: Makes a GET request and responds with the number of people currently in space, their names and the spacecraft they're on.
-=======
->>>>>>> 4f9874cd46a61fcfe79d503265966bfc73009a22
 * `apod`: Makes a GET request and responds with information about the Astronomy Picture Of the Day.
 * `nextlaunch`: Makes a GET request and responds with the next upcoming launch's name, location, launch window and stream link.
 * `rocket <name>`: Makes a GET request and responds with the ID and full name of a rocket through its `<name>`.
