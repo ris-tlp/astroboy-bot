@@ -26,7 +26,7 @@ class ManualSpace(commands.Cog):
                 result += f'Name: {astronaut["name"]} \n'
 
             await ctx.send(result)
-
+            
         except Exception as e:
             await ctx.send("Encountered an error: {e}")
 
@@ -36,7 +36,7 @@ class ManualSpace(commands.Cog):
 
         try:
             response = requests.get(
-                "https://api.nasa.gov/planetary/apod?api_key={}".format(credentials["NASA_API_KEY"]))
+                f'https://api.nasa.gov/planetary/apod?api_key={credentials["NASA_API_KEY"]}')
             data = response.json()
             results = f'''
             **{data["title"]}** - {data["date"]}\n
@@ -56,13 +56,14 @@ class ManualSpace(commands.Cog):
             response = requests.get(
                 f"https://launchlibrary.net/1.4/rocket/{rocketName}")
             data = response.json()
-            result = "Here's what I found " + ctx.message.author.mention + "\n\n"
-            initialLength = len(result)
 
-            for rocket in data["rockets"]:
-                result += f'ID: {rocket["id"]} | Name: {rocket["name"]}\n'
+            if(data["total"] != 0):
+                result = "Here's what I found " + ctx.message.author.mention + "\n\n"
+                initialLength = len(result)
 
-            if len(result) > initialLength:
+                for rocket in data["rockets"]:
+                    result += f'ID: {rocket["id"]} | Name: {rocket["name"]}\n'
+
                 result += "\nYou can find more information through .rocketid using the rocket's ID."
             else:
                 result = "No results."
@@ -80,23 +81,27 @@ class ManualSpace(commands.Cog):
             response = requests.get(
                 f"https://launchlibrary.net/1.4/rocket/{rocketID}")
             data = response.json()
-            responseForFamily = requests.get(
-                "https://launchlibrary.net/1.4/rocketfamily/{}".format(data["rockets"][0]["family"]["id"]))
-            dataForFamily = responseForFamily.json()
-            rocket = data["rockets"][0]
 
-            result = ""
-            result += "**ID**: " + str(rocket["id"]) + "\n"
-            result += "**Name**: " + rocket["name"] + "\n"
-            result += "**Agencies**: "
+            if(data["total"] != 0):
+                responseForFamily = requests.get(
+                    f'https://launchlibrary.net/1.4/rocketfamily/{data["rockets"][0]["family"]["id"]}')
+                dataForFamily = responseForFamily.json()
+                rocket = data["rockets"][0]
 
-            for agency in dataForFamily["RocketFamilies"][0]["agencies"]:
-                result += agency["name"] + ", "
+                result = ""
+                result += "**ID**: " + str(rocket["id"]) + "\n"
+                result += "**Name**: " + rocket["name"] + "\n"
+                result += "**Agencies**: "
 
-            result += "\n"
-            result += "**More information at**: " + \
-                rocket["infoURLs"][0] + "\n"
-            result += rocket["imageURL"]
+                for agency in dataForFamily["RocketFamilies"][0]["agencies"]:
+                    result += agency["name"] + ", "
+
+                result += "\n"
+                result += "**More information at**: " + \
+                    rocket["infoURLs"][0] + "\n"
+                result += rocket["imageURL"]
+            else:
+                result = "No results."
 
             await ctx.send(result)
         except Exception as e:
@@ -123,15 +128,18 @@ class ManualSpace(commands.Cog):
         abbr = ctx.message.content[8:]
         try:
             response = requests.get(
-                "https://launchlibrary.net/1.4/agency/{}".format(abbr))
+                f'https://launchlibrary.net/1.4/agency/{abbr}')
             data = response.json()
 
-            await ctx.send("ID: " + str(data["agencies"][0]["id"]) + "\n" +
-                           "Name: " + data["agencies"][0]["name"] + "\n" +
-                           "Country code: " +
-                           data["agencies"][0]["countryCode"] + "\n"
-                           + "Website: " + data["agencies"][0]["infoURL"] + "\n" +
-                           "Wikipedia: " + data["agencies"][0]["wikiURL"])
+            if(data["total"] != 0):
+                await ctx.send("ID: " + str(data["agencies"][0]["id"]) + "\n" +
+                            "Name: " + data["agencies"][0]["name"] + "\n" +
+                            "Country code: " +
+                            data["agencies"][0]["countryCode"] + "\n"
+                            + "Website: " + data["agencies"][0]["infoURL"] + "\n" +
+                            "Wikipedia: " + data["agencies"][0]["wikiURL"])
+            else:
+                await ctx.send("No results.")
         except Exception as e:
             await ctx.send(f"Encountered an error: {e}")
 
@@ -142,7 +150,7 @@ class ManualSpace(commands.Cog):
         name.replace(" ", "&")
         try:
             response = requests.get(
-                "https://launchlibrary.net/1.4/agency?name={}".format(name))
+                f'https://launchlibrary.net/1.4/agency?name={name}')
             data = response.json()
             results = "Here's what I found: " + ctx.message.author.mention + "\n"
             initialLength = len(results)
@@ -169,14 +177,17 @@ class ManualSpace(commands.Cog):
 
         try:
             response = requests.get(
-                "https://launchlibrary.net/1.4/agency/{}".format(idInput))
+                f'https://launchlibrary.net/1.4/agency/{idInput}')
             data = response.json()
 
-            await ctx.send("Name: " + data["agencies"][0]["name"] + "\n" +
-                           "Country code: " +
-                           data["agencies"][0]["countryCode"] + "\n"
-                           + "Website: " + data["agencies"][0]["infoURL"] + "\n" +
-                           "Wikipedia: " + data["agencies"][0]["wikiURL"])
+            if(data["total"] != 0):
+                await ctx.send("Name: " + data["agencies"][0]["name"] + "\n" +
+                            "Country code: " +
+                            data["agencies"][0]["countryCode"] + "\n"
+                            + "Website: " + data["agencies"][0]["infoURL"] + "\n" +
+                            "Wikipedia: " + data["agencies"][0]["wikiURL"])
+            else:
+                await ctx.send("No results.")
 
         except Exception as e:
             await ctx.send(f"Encountered an error: {e}")
@@ -189,17 +200,19 @@ class ManualSpace(commands.Cog):
         missionName.replace(" ", "&")
         try:
             response = requests.get(
-                "https://launchlibrary.net/1.4/mission/{}".format(missionName))
+                f'https://launchlibrary.net/1.4/mission/{missionName}')
             data = response.json()
-            results = "Here's what I found: " + ctx.message.author.mention + "\n\n"
-            initialLength = len(results)
+            if(data["total"] != 0):
+                    
+                results = "Here's what I found: " + ctx.message.author.mention + "\n\n"
+                initialLength = len(results)
 
-            for mission in data["missions"]:
-                results += "{}. {}\n".format(mission["id"], mission["name"])
-
-            if len(results) > initialLength:
+                for mission in data["missions"]:
+                    results += "{}. {}\n".format(mission["id"], mission["name"])
+                
                 results = results + "\n" + \
                     "You can find more information by searching through ID using .missionid"
+
             else:
                 results = "No results."
 
@@ -218,9 +231,12 @@ class ManualSpace(commands.Cog):
                 f"https://launchlibrary.net/1.4/mission/{missionID}")
             data = response.json()
 
-            await ctx.send("{}. **{}** - {}"
-                           .format(data["missions"][0]["id"], data["missions"][0]["name"],
-                                   data["missions"][0]["description"]))
+            if(data["total"] != 0):
+                await ctx.send("{}. **{}** - {}"
+                            .format(data["missions"][0]["id"], data["missions"][0]["name"],
+                                    data["missions"][0]["description"]))
+            else:
+                await ctx.send("No results.")
         except Exception as e:
             await ctx.send(f"Encountered an error: {e}")
 
