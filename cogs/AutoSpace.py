@@ -52,7 +52,7 @@ class AutoSpace(commands.Cog):
             {data["url"]}'''
 
             await channel.send(results)
-            await asyncio.sleep(86400)        
+            await asyncio.sleep(86400)
 
 
 def setup(bot):

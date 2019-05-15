@@ -6,7 +6,7 @@ import random
 class Fun(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-    
+
     @commands.command(pass_context=True)
     async def ping(self, ctx):
         # await ctx.send(f"{member.display_name}")

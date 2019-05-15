@@ -49,6 +49,7 @@ async def unload(ctx, extension):
     except Exception as error:
         print("{} could not be unloaded. <{}>".format(extension, error))
 
+
 @bot.command(pass_context=True)
 async def reset(ctx, extension):
     try:
@@ -57,6 +58,12 @@ async def reset(ctx, extension):
         await ctx.send(f"{extension} cog reset")
     except Exception as error:
         await ctx.send(error)
+
+
+@bot.command(pass_context=True)
+async def github(ctx):
+    '''Returns the github repo of this bot'''
+    await ctx.send("https://github.com/ris-tlp/astroboy-bot")
 
 
 if __name__ == '__main__':
