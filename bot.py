@@ -11,9 +11,9 @@ bot = commands.Bot(command_prefix=prefix)
 @bot.event
 async def on_ready():
     print("-------------")
-    print("User::" + bot.user.name)
-    print("ID::" + str(bot.user.id))
-    print("Version::" + discord.__version__)
+    print(f'User::{bot.user.name}')
+    print(f'ID::{str(bot.user.id)}')
+    print(f'Version::{discord.__version__}')
     print("-------------")
 
     AutoSpace = bot.get_cog("AutoSpace")
