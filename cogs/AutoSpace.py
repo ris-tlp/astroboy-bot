@@ -48,14 +48,14 @@ class AutoSpace(commands.Cog):
         while not self.bot.is_closed():
             response = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={credentials['NASA_API_KEY']}")
             data = response.json()
-            results = ''
+            result = ''
             result += (
-                f'**{data["title"]}** | {data["date"]}\n'
+                f'**\n{data["title"]}** | {data["date"]}\n'
                 f'{data["explanation"]}\n'
                 f'{data["url"]}'
             )
 
-            await channel.send(results)
+            await channel.send(result)
             await asyncio.sleep(86400)
 
 
