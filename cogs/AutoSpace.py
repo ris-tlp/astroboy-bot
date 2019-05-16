@@ -22,13 +22,15 @@ class AutoSpace(commands.Cog):
             data = response.json()
             currentLaunchName = data["launches"][0]["name"]
             launch = data["launches"][0]
-            result = f'''
-            Name: {launch["name"]}
-            Net time: {launch["net"]}
-            Location: {launch["location"]["pads"][0]["name"]}
-            Agency: {launch["location"]["pads"][0]["agencies"][0]["name"]}
-            Rocket: {launch["rocket"]["name"]}
-            Mission description: {launch["missions"][0]["description"]}\n\n\n'''
+            result = ""
+            result += (
+            f'**Name**: {launch["name"]}\n'
+            f'**Net time**: {launch["net"]}\n'
+            f'**Location**: {launch["location"]["pads"][0]["name"]}\n'
+            f'**Agency**: {launch["location"]["pads"][0]["agencies"][0]["name"]}\n'
+            f'**Rocket**: {launch["rocket"]["name"]}\n'
+            f'**Mission description**: {launch["missions"][0]["description"]}\n\n\n'
+                )
 
             # checks if previous launch is the same as the current launch
             if (not (previousLaunchName == currentLaunchName)) or (previousLaunchName is None):
@@ -46,10 +48,12 @@ class AutoSpace(commands.Cog):
         while not self.bot.is_closed():
             response = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={credentials['NASA_API_KEY']}")
             data = response.json()
-            results = f'''
-            \n**{data["title"]}** - {data["date"]}\n
-            {data["explanation"]}\n
-            {data["url"]}'''
+            results = ''
+            result += (
+                f'**{data["title"]}** | {data["date"]}\n'
+                f'{data["explanation"]}\n'
+                f'{data["url"]}'
+            )
 
             await channel.send(results)
             await asyncio.sleep(86400)
