@@ -22,8 +22,7 @@ class AutoSpace(commands.Cog):
             data = response.json()
             currentLaunchName = data["launches"][0]["name"]
             launch = data["launches"][0]
-            result = ""
-            result += (
+            result = (
             f'**Name**: {launch["name"]}\n'
             f'**Net time**: {launch["net"]}\n'
             f'**Location**: {launch["location"]["pads"][0]["name"]}\n'
@@ -48,8 +47,7 @@ class AutoSpace(commands.Cog):
         while not self.bot.is_closed():
             response = requests.get(f"https://api.nasa.gov/planetary/apod?api_key={credentials['NASA_API_KEY']}")
             data = response.json()
-            result = ''
-            result += (
+            result = (
                 f'**\n{data["title"]}** | {data["date"]}\n'
                 f'{data["explanation"]}\n'
                 f'{data["url"]}'

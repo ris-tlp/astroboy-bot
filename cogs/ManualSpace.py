@@ -38,9 +38,8 @@ class ManualSpace(commands.Cog):
             response = requests.get(
                 f'https://api.nasa.gov/planetary/apod?api_key={credentials["NASA_API_KEY"]}')
             data = response.json()
-            result = ''
 
-            result += (
+            result = (
                 f'**{data["title"]}** - {data["date"]}\n'
                 f'{data["explanation"]}\n'
                 f'{data["url"]}'
@@ -88,9 +87,8 @@ class ManualSpace(commands.Cog):
                     f'https://launchlibrary.net/1.4/rocketfamily/{data["rockets"][0]["family"]["id"]}')
                 dataForFamily = responseForFamily.json()
                 rocket = data["rockets"][0]
-                result = ''
 
-                result += (
+                result = (
                     f'**ID**: {str(rocket["id"])}\n'
                     f'**Name**: {rocket["name"]}\n'
                     "**Agencies**: "
@@ -119,8 +117,7 @@ class ManualSpace(commands.Cog):
                 "https://launchlibrary.net/1.4/launch/next/1")
             data = response.json()
             launch = data["launches"][0]
-            result = ''
-            result += (
+            result = (
                 f'**Name**: {launch["name"]}\n'
                 f'**Launch window**: {launch["windowstart"]}\n'
                 f'**Location**: {launch["location"]["pads"][0]["name"]}\n'
@@ -142,9 +139,8 @@ class ManualSpace(commands.Cog):
             data = response.json()
 
             if(data["total"] != 0):
-                result = ''
                 agency = data["agencies"][0]
-                result += (
+                result = (
                     f'**ID**: {agency["id"]}\n'
                     f'**Name**: {agency["name"]}\n'
                     f'**Country code**: {agency["countryCode"]}\n'
@@ -192,9 +188,8 @@ class ManualSpace(commands.Cog):
             data = response.json()
 
             if(data["total"] != 0):
-                result = ''
                 agency = data["agencies"][0]
-                result += (
+                result = (
                     f'**Name**: {agency["name"]}\n'
                     f'**Country code**: {agency["countryCode"]}\n'
                     f'**Website**: {agency["infoURL"]}\n'
