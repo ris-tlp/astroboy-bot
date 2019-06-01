@@ -59,7 +59,6 @@ async def reset(ctx, extension):
     except Exception as error:
         await ctx.send(error)
 
-
 @bot.command(pass_context=True)
 async def github(ctx):
     '''Returns the github repo of this bot'''
