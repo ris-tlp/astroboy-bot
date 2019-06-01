@@ -6,10 +6,12 @@ A discord bot that notifies of upcoming launches by various space agencies every
 Requires Python `3.5.3` or higher as it uses [discord.py](https://github.com/Rapptz/discord.py) version `1.1.1` 
 
 ## Instructions
-1. `python -m pip install -r requirements.txt` to install necessary packages.  
-2. Replace "token" with your bot's token in `credentials.json`.  
-3. Replace "nasa_api_key" with your api key in `credentials.json`. You can get your key in an instant from [NASA's page](https://api.nasa.gov/index.html#apply-for-an-api-key). 
-4. Run `bot.py`. That's all!  
+1. `python -m pip install pipenv` to install pipenv (required to install dependencies).  
+2. `pipenv install` to initialize a venv and install required dependencies.
+3. Replace `"token"` with your bot's token in `credentials.json`.  
+4. Replace `"nasa_api_key"` with your api key in `credentials.json`. You can get your key in an instant from [NASA's page](https://api.nasa.gov/index.html#apply-for-an-api-key). 
+5. `pipenv shell` to start the venv.
+5. Run `bot.py`. That's all!  
 
 **Prefixes**: 
 * $ 
